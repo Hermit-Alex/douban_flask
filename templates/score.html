@@ -1,0 +1,240 @@
+<!--ctrl+r 替换 原来的assert换为static/assert -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <script src="static/assets/js/echarts.min.js"> </script><!--引入ECharts JS文件 相当于引入模块-->
+  <title>豆瓣TOP250</title><!--标题栏-->
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="static/assets/img/favicon.png" rel="icon">
+  <link href="static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i,900" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="static/assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="static/assets/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header">
+    <div class="container">
+
+      <div class="logo float-left">
+        <h1 class="text-light"><a href="/index"><span>TOP250</span></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="temp.html"><img src="static/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav class="nav-menu float-right d-none d-lg-block">
+        <ul>
+          <li class="active"><a href="/index">首页 <i class="la la-angle-down"></i></a></li>
+          <li><a href="/movie">电影</a></li>
+          <li><a href="/score">评分</a></li>
+          <li><a href="/word">词云</a></li>
+          <li><a href="/team">团队</a></li>
+        </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+  </header><!-- End Header -->
+
+     <!-- ======= 评分分布页 ======= -->
+    <section id="team" class="team">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>豆瓣TOP250评分分布</h2>
+          <p>以下表格使用了ECharts</p>
+        </div> <!-- 标题和导语-->
+
+    <!-- ======= Counts Section 计数板块 ======= -->
+    <section class="counts section-bg">
+
+      <div class="container">
+        <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+        <div id="chart1" style="width: 100%;height:400px;"></div><!-- id 后面的名字很重要 只能有一个否则出错-->
+
+
+
+      </div>
+    </section><!-- 结束 -->
+
+      </div>
+    </section><!-- 结束评分分布页 -->
+
+<!--ECharts 图表 main -->
+<script type="text/javascript">
+var dom = document.getElementById("chart1");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+var dataAxis = [{{ score[0] }},{{ score[1] }},{{ score[2] }},{{ score[3] }},{{ score[4] }},
+                {{ score[5] }},{{ score[6] }},{{ score[7] }},{{ score[8] }},{{ score[9] }},
+                {{ score[10] }},{{ score[11] }},{{ score[12] }},{{ score[13] }},{{ score[14] }}];
+var data = [{{number[0]}},{{number[1]}},{{number[2]}},{{number[3]}},{{number[4]}},
+            {{number[5]}},{{number[6]}},{{number[7]}},{{number[8]}},{{number[9]}},
+            {{number[10]}},{{number[11]}},{{number[12]}},{{number[13]}},{{number[14]}},];
+var yMax = 50;
+var dataShadow = [];
+
+for (var i = 0; i < data.length; i++) {
+    dataShadow.push(yMax);
+}
+
+option = {
+    title: {
+        text: '评分分布',
+        x:'center',
+        y:'top',
+        textAlign:'left'
+
+    },
+    'data': data,
+
+    xAxis: {
+        data: dataAxis,
+        name : '分数',
+
+        axisLabel: {
+            inside: false,
+            textStyle: {
+                color: '#000',
+                fontStyle:'normal',
+                fontWeight:'bold'
+            }
+        },
+        axisTick: {
+            show: false
+        },
+        axisLine: {
+            show: false
+        },
+        z: 10
+    },
+    yAxis: {
+
+        axisLine: {
+            show: false
+        },
+        axisTick: {
+            show: false
+        },
+        axisLabel: {
+            textStyle: {
+                color: '#999'
+            }
+        }
+    },
+    dataZoom: [
+        {
+            type: 'inside'
+        }
+    ],
+    tooltip: {},
+    series: [
+        {
+            type: 'bar',
+            emphasis: {
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 1,
+                        [
+                            {offset: 0, color: '#2378f7'},
+                            {offset: 0.7, color: '#2378f7'},
+                            {offset: 1, color: '#83bff6'}
+                        ]
+                    ),
+
+                }
+            },
+            label: {
+                    show: true, //开启显示
+                    position: 'top', //在上方显示
+                    textStyle: { //数值样式
+                        color: 'black',
+                        fontSize: 16
+                    }
+                },
+            itemStyle: {
+
+                color: new echarts.graphic.LinearGradient(
+                    0, 0, 0, 1,
+                    [
+                        {offset: 0, color: '#83bff6'},
+                        {offset: 0.5, color: '#188df0'},
+                        {offset: 1, color: '#188df0'}
+                    ]
+                )
+
+            },
+            data: data,
+
+
+        }
+    ]
+};
+
+// Enable data zoom when user click bar.
+var zoomSize = 6;
+myChart.on('click', function (params) {
+    console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+    myChart.dispatchAction({
+        type: 'dataZoom',
+        startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+        endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+    });
+});
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+</script>
+<!--结束chart1设置-->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>Hermit</span></strong>. All Rights Reserved
+      </div>
+
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="static/assets/vendor/jquery/jquery.min.js"></script>
+  <script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="static/assets/vendor/php-email-form/validate.js"></script>
+  <script src="static/assets/vendor/jquery-sticky/jquery.sticky.js"></script>
+  <script src="static/assets/vendor/venobox/venobox.min.js"></script>
+  <script src="static/assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+  <script src="static/assets/vendor/counterup/counterup.min.js"></script>
+  <script src="static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="static/assets/vendor/aos/aos.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/assets/js/main.js"></script>
+
+</body>
+
+</html>
